@@ -12,7 +12,7 @@ public class EstoqueServico {
 
         // metodos tambem podem agir como construtor
         // de forma que o construtor e extansiado depois
-        public void cadastra(String codigo, String nome, double preco, int quantidade){
+        public void cadastra(String nome, String codigo, double preco, int quantidade){
             produtos.add(new Produto(nome, codigo, preco, quantidade));
             System.out.println("Produto cadrastado com sucesso!!");
         }
@@ -34,9 +34,7 @@ public class EstoqueServico {
             if (quantidade <= 0)throw new QuantidadeInvalida("Quantidade invalida para saida");
 
             Produto produto = buscaPorCodigo(codigo);
-            produto.remover(quantidade);
             // se a quantidade removida for maior que a quantidade em estoque eu ultilzo a exceptions QuantidadeInvalida
-
             if (quantidade > produto.getQuantidade()){
                 throw new QuantidadeInvalida("Estoque insuficiente para saida");
         }
@@ -44,7 +42,14 @@ public class EstoqueServico {
             System.out.println("Saida registrada!");
         }
         public void lista(){
+            // mesma coisa de se usar um for each
+            // para cada produto em produtos: imprima
             produtos.forEach(System.out::println);
         }
+        public double valorTotalEstoque(){
+            return produtos.stream()
+                    .mapToDouble(Produto::valorTotal)
+                    .sum();
+            }
+        }
 
-}
